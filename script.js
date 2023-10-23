@@ -64,7 +64,12 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             // Ergebnisse gefunden
             resultsContainer.classList.remove('hidden'); // Ergebnis-Container anzeigen
-            resultsTitle.style.fontSize = "15px";
+            const handy = window.innerWidth;
+            if(handy < 768) {
+                resultsTitle.style.fontSize = "15px";
+            } else {
+                resultsTitle.style.fontSize = "28px";
+            }
             resultsTitle.textContent = `Es konnten ${users.length} Ergebnisse gefunden werden`;
             searchInput.style.display = 'none'; // Suchleiste ausblenden
             searchButton.style.display = 'none'; // Such-Button ausblenden
@@ -101,9 +106,6 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const userID = urlParams.get('userID');
-    console.log("Warenkörbe für " + userID);
-    // Hier fügen Sie den Wert der Benutzer-ID zum Titel hinzu
-    document.title = `ShoppingData.com - User ${userID}`;
 
     const nichtsimeinkaufswagen = document.getElementById('nichtsimeinkaufswagen');
     const nichtsimeinkaufswagenbutton = document.getElementById('nichtsimeinkaufswagenbutton');
@@ -120,6 +122,8 @@ document.addEventListener('DOMContentLoaded', function() {
             nichtsimeinkaufswagen.classList.remove('hidden');
             nichtsimeinkaufswagenbutton.classList.remove('hidden');
         } else {
+            // Hier fügen Sie den Wert der Benutzer-ID zum Titel hinzu
+        document.title = `ShoppingData.com - User ${userID}`;
         carts.forEach(cart => {
             const cartTable = document.createElement('table');
             const cartItems = cart.products;
