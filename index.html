@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShoppingData.com</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1><a href="#">ShoppingData.com</a></h1>
+            <p>Dich interessiert der aktuelle Einkaufwagen eines Users von ShoppingEasy.com?</p>
+        </div>
+    </header>
+    <main>
+        <div class="search-container">
+            <input type="text" id="state-input" placeholder="Datenbank durchsuchen...">
+            <button id="search-button" class="button">Suchen</button>
+            <div class="hint">
+                <span>?</span>
+                <p>Grenzen Sie ihre Suche nach einem User mit der Eingabe dessen Wohnsitzes z.B. Washington oder Manchester ein.</p>
+            </div>
+        </div>
+        <div id="results-container" class="hidden">
+            <h2 id="results-title">Es konnten 0 Ergebnisse gefunden werden</h2>
+            <table id="results-table" class="content">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>User ID</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div id="noresultsdiv" class="hidden">
+            <h3 id="no-results-title">Unter dem angegebenen Wohnsitz, konnte kein User in der Datenbank gefunden werden
+            </h3>
+            <button id="close-noresultstitle" class="button">Erneut versuchen</button>
+        </div>
+            <div id="popup" class="hidden">
+                <div id="popup-content">
+                    <p class="größerertext">Bitte geben Sie einen Wohnsitz an.</p>
+                    <button id="close-popup" class="button">Erneut versuchen</button>
+                </div>
+            </div>
+    </main>
+    <footer>
+        <div class="footer-left">
+            <h2>Impressum</h2>
+            <p>ShoppingEasy GmbH</p>
+            <p>Frankfurt am Main</p>
+            <p>Deutschland</p>
+        </div>
+        <div class="footer-center">
+            <h2>Social Media</h2>
+            <ul class="social-media">
+                <li><a href="#">@Instagram</a></li>
+                <li><a href="#">@Facebook</a></li>
+                <li><a href="#">@Twitter</a></li>
+            </ul>
+        </div>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
