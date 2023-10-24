@@ -14,10 +14,35 @@
         </div>
     </header>
     <main>
-    <h3 id="nichtsimeinkaufswagen" class="hidden">Der User hat keine Artikel bei uns im Warenkorb.</h3>
-    <button id="nichtsimeinkaufswagenbutton" class="hidden">Zurück zur Startseite</button>
-    <!-- Hier ist der Hauptinhalt Ihrer Ergebnisse.html-Seite -->
-    <div id="cart-container">
+        <div id="nichtsimeinkaufswagencontainer" class="hidden">
+            <h3 id="nichtsimeinkaufswagen">Der User hat keine Artikel bei uns im Warenkorb.</h3>
+            <button id="nichtsimeinkaufswagenbutton" class="button">Zurück zur Startseite</button>
+        </div>
+    <div id="einkaufswagen-container" class="hidden">
+        <h2 id="carts-title">r</h2>
+        <h3>Klicke auf Item für Details!</h3>
+        <table id="carts-table" class="content">
+            <thead>
+                <tr>
+                    <th>Titel</th>
+                    <th>Preis</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+    <div id="einkauswagenitemimdetail" class="hidden">
+        <h2 id="itemImDetailTitel"></h2>
+        <h3>Detailansicht</h3>
+        <table id="items-table" class="content">
+            <thead>
+                <tr>
+                    <th>Menge</th>
+                    <th>Gesamtpreis</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
     </div>
     </main>
     <footer>
@@ -36,6 +61,6 @@
             </ul>
         </div>
     </footer>
-    <script src="script.js"></script>
+    <script src="script_ergebnisse.js"></script>
 </body>
 </html>
