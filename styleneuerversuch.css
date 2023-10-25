@@ -20,6 +20,69 @@ main {
     padding: 10px;
     flex-grow: 1;
 }
+footer {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    background-color: #ccc;
+    padding: 10px;
+    max-height: 100%; 
+}
+.social-media {
+    list-style: none;
+    padding: 0;
+}
+.social-media li {
+    margin-bottom: 10px; 
+}
+/* Das genrelle Aussehen der Anker-Tags geändert und auf
+Aussehen der Webseite angepasst, mit Hover-Funktion */
+a {
+    text-decoration: none; 
+    color: #0073e6; 
+}
+a:visited {
+    color: none; 
+}
+a:hover {
+    color: #ff6600; 
+}
+/* Die standartmäßige Größe (Mobile) für Überschriften
+  und Fließtext gesetzt */
+  h1 {
+    font-size: 20px; 
+ }
+ h2 {
+     font-size: 15px;
+ }
+ h3 {
+     font-size: 12px;
+ }
+ p {
+     font-size: 11px;
+ }
+ ul li a {
+     font-size: 11px;
+ }
+ /* Eine hidden-Klasse die dazu dient, die passenden Elemente ein- und auszublenden */
+.hidden {
+    display: none;
+}
+/* Allgemeines Aussehen der Button */
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 13px;
+    text-align: center;
+    text-decoration: none;
+    background-color: #0077FF;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+/*Design für die Startseite */
+/*Für den Suchcontainer, Suchleiste, Suchbutton*/
 .search-container {
     display: flex;
     flex-direction: column;
@@ -39,60 +102,7 @@ input#state-input {
 .hint span {
     font-size: 18px;
     margin-right: 10px;
-}
-footer {
-    display: flex;
-    flex-direction: column; 
-    align-items: center;
-    background-color: #ccc;
-    padding: 10px;
-    max-height: 100%; 
-}
-.social-media {
-    list-style: none;
-    padding: 0;
-}
-.social-media li {
-    margin-bottom: 10px; 
-}
-/* Eine hidden-Klasse die dazu dient, die passenden Elemente ein- und auszublenden */
-.hidden {
-    display: none;
-}
-#results-container {
-    text-align: center;
-}
-#results-title {
-    font-size: 20px;
-    margin: 10px 0;
-}
-/* Das genrelle Aussehen der Anker-Tags geändert und auf
-Aussehen der Webseite angepasst, mit Hover-Funktion */
-a {
-    text-decoration: none; 
-    color: #0073e6; 
-}
-a:visited {
-    color: none; 
-}
-a:hover {
-    color: #ff6600; 
-}
-/* Ein einheitliches Aussehen für alle Buttons*/
-.button {
-    display: inline-block;
-    padding: 10px 20px;
-    font-size: 13px;
-    text-align: center;
-    text-decoration: none;
-    background-color: #0077FF;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.größerertext {
-    font-size: 13px;
+    display: block;
 }
 /* Darstellung der beiden Tabellen durch ein YouTube-Video */
 table.content {
@@ -130,37 +140,22 @@ table.content {
     font-weight: bold;
     color: #ccc;
   }
-  /* diese obere Darstellung der Tabelle für beide Tabellen (User und Cards)
-  verwendet  */
-
-  /* Die standartmäßige Größe (Mobile) für Überschriften
-  und Fließtext gesetzt */
-    h1 {
-       font-size: 20px; 
-    }
-    h2 {
-        font-size: 15px;
-    }
-    h3 {
-        font-size: 12px;
-    }
-    p {
-        font-size: 11px;
-    }
-    ul li a {
-        font-size: 11px;
-    }
-/* Responsive Design also bei größeren Geräten als Mobile ändert 
-sich die Darstellung der Webseite also Überschriften, Texte etc.*/
-@media (min-width: 768px) {
+#results-container {
+    text-align: center;
+}
+#results-title {
+    font-size: 20px;
+    margin: 10px 0;
+}
+.größerertext {
+    font-size: 13px;
+}
+ @media (min-width: 768px) {
     header {
         padding: 10px; 
     }
     main {
         padding: 20px; 
-    }
-    .hint span {
-        font-size: 24px; 
     }
     h1 {
         font-size: 38px; 
@@ -177,11 +172,13 @@ sich die Darstellung der Webseite also Überschriften, Texte etc.*/
     ul li a {
         font-size: 20px; 
     }
-    .button {
-        font-size: 20px;
+    footer {
+        flex-direction: row; 
+        justify-content: space-between; 
+        padding: 10px; 
     }
-    .größerertext {
-        font-size: 23px;
+    .hint span {
+        font-size: 24px; 
     }
     #state-input::placeholder {
         font-size: 18px; 
@@ -189,10 +186,8 @@ sich die Darstellung der Webseite also Überschriften, Texte etc.*/
     #state-input {
         font-size: 18px; 
     }
-    footer {
-        flex-direction: row; 
-        justify-content: space-between; 
-        padding: 10px; 
+    .button {
+        font-size: 20px;
     }
     table.content thead tr {
         font-size: 23px;
@@ -204,4 +199,7 @@ sich die Darstellung der Webseite also Überschriften, Texte etc.*/
         padding: 12px 16px;
         font-size: 20px;
       }
+    .größerertext {
+        font-size: 23px;
+    }
 }
