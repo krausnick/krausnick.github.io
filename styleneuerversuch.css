@@ -99,11 +99,6 @@ input#state-input {
     display: flex;
     align-items: center;
 }
-.hint span {
-    font-size: 18px;
-    margin-right: 10px;
-    display: block;
-}
 /* Darstellung der beiden Tabellen durch ein YouTube-Video */
 table.content {
     border-collapse: collapse;
@@ -176,9 +171,6 @@ table.content {
         flex-direction: row; 
         justify-content: space-between; 
         padding: 10px; 
-    }
-    .hint span {
-        font-size: 24px; 
     }
     #state-input::placeholder {
         font-size: 18px; 

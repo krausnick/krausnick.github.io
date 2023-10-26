@@ -210,7 +210,21 @@ function setupResultsPage() {
                 //die Funktion aufgerufen und das spezifische Item 
                 //aus dem Warenkorb übergeben
                 titelCell.addEventListener('click', () => {
-                    zeigeDetailsDesItemsAn(item);
+                    console.log("Die Detailansicht des geklickten Items!");
+                    const itemstable = document.getElementById('items-table').getElementsByTagName('tbody')[0];
+                    const einkauswagenitemimdetail = document.getElementById('einkauswagenitemimdetail');
+                    const einkaufswagencontainer = document.getElementById('einkaufswagen-container');
+                    const itemImDetailTitel = document.getElementById('itemImDetailTitel');
+                    einkaufswagencontainer.classList.add('hidden');
+                    einkauswagenitemimdetail.classList.remove('hidden');
+                    itemImDetailTitel.textContent = `${item.title}`;
+
+                const row = itemstable.insertRow();
+                const mengeCell = row.insertCell(0);
+                const preisgesamtCell = row.insertCell(1);
+
+                mengeCell.textContent = item.quantity;
+                preisgesamtCell.textContent = item.total;
                 });
                 titelCell.appendChild(itemLink);
                 preisCell.textContent = item.price;
