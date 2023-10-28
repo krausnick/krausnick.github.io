@@ -163,7 +163,7 @@ function setupResultsPage() {
     const einkaufswagentabelle = document.getElementById('carts-table').getElementsByTagName('tbody')[0];
     const cartstitle = document.getElementById('carts-title');
 
-    const nichtsimeinkaudswagencontainer = document.getElementById('nichtsimeinkaufswagencontainer');
+    const nichtsimeinkaufswagencontainer = document.getElementById('nichtsimeinkaufswagencontainer');
     const einkauswagenitemimdetail = document.getElementById('einkauswagenitemimdetail');
 
     const url = window.location.href 
@@ -178,15 +178,21 @@ function setupResultsPage() {
 
 
         einkaufswagencontainer.classList.add('hidden');
-        nichtsimeinkaudswagencontainer.classList.add('hidden');
+        nichtsimeinkaufswagencontainer.classList.add('hidden');
         einkauswagenitemimdetail.classList.add('hidden');
+
+        const nichtsimeinkaufswagenbutton = document.getElementById('nichtsimeinkaufswagenbutton');
+        nichtsimeinkaufswagenbutton.addEventListener('click', function() {
+            window.history.back();
+        });
+
         fetch(`https://dummyjson.com/users/${number}/carts`)
             .then(res => res.json())
             .then(data => {
                 const carts = data.carts;
                 if (carts.length == 0) {
-                    alert("Der User hat keinen Warenkorb!");
-
+                    console.log("Kein Warenkorb gefunden!");
+                    nichtsimeinkaufswagencontainer.classList.remove('hidden');
                 } else {
                     //Wenn der aufgerufene User einen Warenkorb hat, dann erfolgt 
                     //dessen Anzeige in tabelarischer Darstellung
