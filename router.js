@@ -16,7 +16,7 @@ class Router {
     }
 
     _handleRouting() {
-        let url = location.hash.slice(1); 
+        let url = location.hash.slice(1);
 
         if (url.length === 0) {
             url = "/";
@@ -50,7 +50,7 @@ function setupStartPage() {
     const hint = document.querySelector('.hint');
     const closePopup = document.getElementById('close-popup');
 
-    searchButton.addEventListener('click', function() {
+    searchButton.addEventListener('click', function () {
         const inputValue = formatInput(searchInput.value.trim());
 
         if (inputValue) {
@@ -66,33 +66,27 @@ function setupStartPage() {
                 });
         } else {
             popup.classList.remove('hidden');
-            searchInput.style.display = 'none'; // Suchleiste ausblenden
-            searchButton.style.display = 'none'; // Such-Button ausblenden
-            hint.style.display = 'none'; // Hinweistext ausblenden
+            searchInput.style.display = 'none'; 
+            searchButton.style.display = 'none'; 
+            hint.style.display = 'none'; 
         }
     });
-    searchInput.addEventListener('keyup', function(event) {
-        if(event.key == 'Enter') {
+    searchInput.addEventListener('keyup', function (event) {
+        if (event.key == 'Enter') {
             searchButton.click();
         }
     });
-    closePopup.addEventListener('click', function() {
+    closePopup.addEventListener('click', function () {
         popup.classList.add('hidden');
         anzeigeStartSeite();
     });
-
-    // Hier kannst du den JavaScript-Code spezifisch für die Startseite einfügen
-    // Füge Funktionen und Logik für die Startseite hinzu.
-    // Zum Beispiel: Event-Listener, API-Anfragen, usw.
 }
-var geklickteuserid = '';
 
 function displaySearchResults(users) {
     console.log("Die Suchergebnisse bzw. User werden angezeigt!");
     const resultsTable = document.getElementById('results-table').getElementsByTagName('tbody')[0];
     const resultsContainer = document.getElementById('results-container');
     const resultsTitle = document.getElementById('results-title');
-    const searchcontainer = document.getElementById('search-container');
     resultsTable.innerHTML = ''; // Leere zuerst die Tabelle
     resultsContainer.classList.add('hidden'); // Verstecke das Ergebnis-Container
 
@@ -101,13 +95,12 @@ function displaySearchResults(users) {
     const hint = document.querySelector('.hint');
 
     const noresultsdiv = document.getElementById('noresultsdiv');
-    const noResultText = document.getElementById('no-results-title');
 
     const closenoresultstitle = document.getElementById('close-noresultstitle');
-    closenoresultstitle.addEventListener('click', function() {
+    closenoresultstitle.addEventListener('click', function () {
         noresultsdiv.classList.add('hidden');
-            anzeigeStartSeite();
-        
+        anzeigeStartSeite();
+
     });
 
     if (users.length === 0) {
@@ -120,7 +113,7 @@ function displaySearchResults(users) {
         // Ergebnisse gefunden
         resultsContainer.classList.remove('hidden'); // Ergebnis-Container anzeigen
         const handy = window.innerWidth;
-        if(handy < 768) {
+        if (handy < 768) {
             resultsTitle.style.fontSize = "15px";
         } else {
             resultsTitle.style.fontSize = "28px";
@@ -129,32 +122,24 @@ function displaySearchResults(users) {
         searchInput.style.display = 'none'; // Suchleiste ausblenden
         searchButton.style.display = 'none'; // Such-Button ausblenden
         hint.style.display = 'none'; // Hinweistext ausblenden
-
         users.forEach(user => {
             const row = resultsTable.insertRow();
             const nameCell = row.insertCell(0);
             const idCell = row.insertCell(1);
 
-        // Erstellen eines anklickbaren Link zum Warenkorb
-        const userLink = document.createElement('a');
-        userLink.textContent = `${user.firstName} ${user.lastName}`;
-        userLink.href = `#/ergebnisse/`; 
-        
-        
-        userLink.addEventListener('click', function() {
-            geklickteuserid = '';
-            geklickteuserid = user.id;
-        });
-        
-        
-        
-        
-        // Leiten Sie zur Ergebnisse-Seite mit Benutzer-ID weiter
-    // Öffnen des Links in einem gleichen Tab
+            // Erstellen eines anklickbaren Link zum Warenkorb
+            const userLink = document.createElement('a');
+            userLink.textContent = `${user.firstName} ${user.lastName}`;
 
-        nameCell.appendChild(userLink);
-        idCell.textContent = user.id;
+
+            userLink.addEventListener('click', function () {
+                userLink.href = `#/ergebnisse/${user.id}`;
+            });
+            nameCell.appendChild(userLink);
+            idCell.textContent = user.id;
         });
+
+
     }
 }
 function formatInput(input) {
@@ -168,7 +153,6 @@ function keineItemsImEinkauwagen() {
         nichtsimeinkaudswagencontainer.classList.remove('hidden');
 
         nichtsimeinkaufswagenbutton.addEventListener('click', function() {
-            window.location.href = '#/';
             nichtsimeinkaudswagencontainer.classList.add('hidden');
         });
     
@@ -179,62 +163,85 @@ function setupResultsPage() {
     const einkaufswagentabelle = document.getElementById('carts-table').getElementsByTagName('tbody')[0];
     const cartstitle = document.getElementById('carts-title');
 
-    console.log(geklickteuserid);
+    const nichtsimeinkaudswagencontainer = document.getElementById('nichtsimeinkaufswagencontainer');
+    const einkauswagenitemimdetail = document.getElementById('einkauswagenitemimdetail');
 
-    fetch(`https://dummyjson.com/users/${geklickteuserid}/carts`)
-    .then(res => res.json())
-    .then(data => {
-        const carts = data.carts;
-        if(carts.length == 0) {
-            //Falls der aufgerufene User keinen Warenkorb hat, wird 
-            //folgende Funktion aufgerufen
-            keineItemsImEinkauwagen();
-        } else {
-            //Wenn der aufgerufene User einen Warenkorb hat, dann erfolgt 
-            //dessen Anzeige in tabelarischer Darstellung
-        einkaufswagencontainer.classList.remove('hidden');
-        cartstitle.textContent = `Warenkorb des Users (User ID: ${geklickteuserid})`;
-        //Für jedes Item aus der der carts-Ressource speichern wir den Titel 
-        //und den Preis in einem Zeileneintrag in der Tabelle
-        carts.forEach(produktauswarenkorb => {
-            produktauswarenkorb.products.forEach(item => {
-                const row = einkaufswagentabelle.insertRow();
-                const titelCell = row.insertCell(0);
-                const preisCell = row.insertCell(1);
+    const url = window.location.href 
+    console.log(url);
+    const regex = /ergebnisse\/(.*)/; 
 
-                const itemLink = document.createElement('a');
-                itemLink.textContent = item.title;
-                //Füge jedem Namen der Items die Möglichkeit hinzu
-                //auf ihn zu klicken um in die Detailansicht des 
-                //Items zu gelangen, für die Detailansicht wird 
-                //die Funktion aufgerufen und das spezifische Item 
-                //aus dem Warenkorb übergeben
-                titelCell.addEventListener('click', () => {
-                    console.log("Die Detailansicht des geklickten Items!");
-                    const itemstable = document.getElementById('items-table').getElementsByTagName('tbody')[0];
-                    const einkauswagenitemimdetail = document.getElementById('einkauswagenitemimdetail');
-                    const einkaufswagencontainer = document.getElementById('einkaufswagen-container');
-                    const itemImDetailTitel = document.getElementById('itemImDetailTitel');
-                    einkaufswagencontainer.classList.add('hidden');
-                    einkauswagenitemimdetail.classList.remove('hidden');
-                    itemImDetailTitel.textContent = `${item.title}`;
+    const match = regex.exec(url); 
 
-                const row = itemstable.insertRow();
-                const mengeCell = row.insertCell(0);
-                const preisgesamtCell = row.insertCell(1);
+    if (match) {
+        const number = match[1]; 
+        console.log("Die extrahierte Zahl ist: " + number);
 
-                mengeCell.textContent = item.quantity;
-                preisgesamtCell.textContent = item.total;
-                });
-                titelCell.appendChild(itemLink);
-                preisCell.textContent = item.price;
+
+        einkaufswagencontainer.classList.add('hidden');
+        nichtsimeinkaudswagencontainer.classList.add('hidden');
+        einkauswagenitemimdetail.classList.add('hidden');
+        fetch(`https://dummyjson.com/users/${number}/carts`)
+            .then(res => res.json())
+            .then(data => {
+                const carts = data.carts;
+                if (carts.length == 0) {
+                    alert("Der User hat keinen Warenkorb!");
+
+                } else {
+                    //Wenn der aufgerufene User einen Warenkorb hat, dann erfolgt 
+                    //dessen Anzeige in tabelarischer Darstellung
+                    einkaufswagencontainer.classList.remove('hidden');
+                    cartstitle.textContent = `Warenkorb des Users (User ID: ${number})`;
+                    //Für jedes Item aus der der carts-Ressource speichern wir den Titel 
+                    //und den Preis in einem Zeileneintrag in der Tabelle
+                    if (einkaufswagentabelle) {
+                        while (einkaufswagentabelle.rows.length > 0) {
+                            einkaufswagentabelle.deleteRow(0);
+                        }
+                    }
+                    carts.forEach(produktauswarenkorb => {
+
+
+                        const einkaufswagentabelle = document.getElementById('carts-table').getElementsByTagName('tbody')[0];
+                        einkaufswagentabelle.innerHTML = '';
+
+                        produktauswarenkorb.products.forEach(item => {
+                            const row = einkaufswagentabelle.insertRow();
+                            const titelCell = row.insertCell(0);
+                            const preisCell = row.insertCell(1);
+                            const itemLink = document.createElement('a');
+                            itemLink.textContent = item.title;
+                            titelCell.addEventListener('click', () => {
+                                console.log("Die Detailansicht des geklickten Items!");
+                                const itemstable = document.getElementById('items-table').getElementsByTagName('tbody')[0];
+                                itemstable.innerHTML = '';
+                                const einkauswagenitemimdetail = document.getElementById('einkauswagenitemimdetail');
+                                const einkaufswagencontainer = document.getElementById('einkaufswagen-container');
+                                const itemImDetailTitel = document.getElementById('itemImDetailTitel');
+                                einkaufswagencontainer.classList.add('hidden');
+                                einkauswagenitemimdetail.classList.remove('hidden');
+                                itemImDetailTitel.textContent = `${item.title}`;
+
+                                const row = itemstable.insertRow();
+                                const mengeCell = row.insertCell(0);
+                                const preisgesamtCell = row.insertCell(1);
+
+                                mengeCell.textContent = item.quantity;
+                                preisgesamtCell.textContent = item.total;
+                            });
+                            titelCell.appendChild(itemLink);
+                            preisCell.textContent = item.price;
+                        });
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Fehler beim Abrufen des Warenkorbs', error);
             });
-        });
+    } else {
+        console.log("Es wurde keine Übereinstimmung gefunden");
     }
-    })
-    .catch(error => {
-        console.error('Fehler beim Abrufen des Warenkorbs', error);
-    });
+
 
 }
 
@@ -249,21 +256,23 @@ window.addEventListener("load", () => {
 
         document.title = `${title} | ShoppingData.com`;
     }
-
     let routes = [
         {
-            url: "^/$",
-            show: () => { setupStartPage();
+            url: /^\/$/,
+            show: () => { 
+                setupStartPage();
                 swapContent("page-start", "Startseite");
             },
         },
         {
-            url: "^/ergebnisse/$",
-            show: () => { setupResultsPage();
+            url: /^\/ergebnisse\/(.*)/,
+            show: () => { 
+                setupResultsPage();
                 swapContent("page-ergebnisse", "Ergebnisse");
             },
         }
     ];
+    
 
     let router = new Router(routes);
     router.start();
