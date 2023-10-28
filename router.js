@@ -217,23 +217,9 @@ function setupResultsPage() {
                             const preisCell = row.insertCell(1);
                             const itemLink = document.createElement('a');
                             itemLink.textContent = item.title;
-                            titelCell.addEventListener('click', () => {
+                            itemLink.addEventListener('click', () => {
                                 console.log("Die Detailansicht des geklickten Items!");
-                                const itemstable = document.getElementById('items-table').getElementsByTagName('tbody')[0];
-                                itemstable.innerHTML = '';
-                                const einkauswagenitemimdetail = document.getElementById('einkauswagenitemimdetail');
-                                const einkaufswagencontainer = document.getElementById('einkaufswagen-container');
-                                const itemImDetailTitel = document.getElementById('itemImDetailTitel');
-                                einkaufswagencontainer.classList.add('hidden');
-                                einkauswagenitemimdetail.classList.remove('hidden');
-                                itemImDetailTitel.textContent = `${item.title}`;
-
-                                const row = itemstable.insertRow();
-                                const mengeCell = row.insertCell(0);
-                                const preisgesamtCell = row.insertCell(1);
-
-                                mengeCell.textContent = item.quantity;
-                                preisgesamtCell.textContent = item.total;
+                                itemLink.href = `#/item/${item.id}`;
                             });
                             titelCell.appendChild(itemLink);
                             preisCell.textContent = item.price;
@@ -248,6 +234,43 @@ function setupResultsPage() {
         console.log("Es wurde keine Übereinstimmung gefunden");
     }
 
+
+}
+function setupItemPage() {
+    console.log("Java Script der Detailsicht des Items geladen!");
+
+    const url = window.location.href 
+    console.log(url);
+    const regex = /item\/(.*)/; 
+
+    const match = regex.exec(url); 
+    const itemid = match[1]; 
+    console.log(itemid);
+
+    fetch(`https://dummyjson.com/products/${itemid}`)
+        .then(res => res.json())
+        .then(data => {
+            const item = data;
+            console.log(item);
+            const itemstable = document.getElementById('items-table').getElementsByTagName('tbody')[0];
+            itemstable.innerHTML = '';
+            const einkauswagenitemimdetail = document.getElementById('einkauswagenitemimdetail');
+            const einkaufswagencontainer = document.getElementById('einkaufswagen-container');
+            const itemImDetailTitel = document.getElementById('itemImDetailTitel');
+            einkaufswagencontainer.classList.add('hidden');
+            einkauswagenitemimdetail.classList.remove('hidden');
+            itemImDetailTitel.textContent = `${item.title}`;
+
+            const row = itemstable.insertRow();
+            const mengeCell = row.insertCell(0);
+            const preisgesamtCell = row.insertCell(1);
+
+            mengeCell.textContent = item.category;
+            preisgesamtCell.textContent = item.brand;
+        })
+        .catch(error => {
+            console.error("Item konnte nicht gefunden werden!", error);
+        })
 
 }
 
@@ -275,6 +298,13 @@ window.addEventListener("load", () => {
             show: () => { 
                 setupResultsPage();
                 swapContent("page-ergebnisse", "Ergebnisse");
+            },
+        },
+        {
+            url: /^\/item\/(.*)/,
+            show: () => { 
+                setupItemPage();
+                swapContent("item-ergebnis", "Detailansicht");
             },
         }
     ];
