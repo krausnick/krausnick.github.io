@@ -34,9 +34,9 @@ class Router {
     }
 }
 function anzeigeStartSeite() {
-    const searchInput = document.getElementById('state-input');
-    const searchButton = document.getElementById('search-button');
-    const hint = document.querySelector('.hint');
+    let searchInput = document.getElementById('state-input');
+    let searchButton = document.getElementById('search-button');
+    let hint = document.querySelector('.hint');
     searchInput.value = '';
     searchInput.style.display = 'block';
     searchButton.style.display = 'block';
@@ -44,20 +44,20 @@ function anzeigeStartSeite() {
 }
 function setupStartPage() {
     console.log("Java-Script der Startseite geladen!");
-    const searchInput = document.getElementById('state-input');
-    const searchButton = document.getElementById('search-button');
-    const popup = document.getElementById('popup');
-    const hint = document.querySelector('.hint');
-    const closePopup = document.getElementById('close-popup');
+    let searchInput = document.getElementById('state-input');
+    let searchButton = document.getElementById('search-button');
+    let popup = document.getElementById('popup');
+    let hint = document.querySelector('.hint');
+    let closePopup = document.getElementById('close-popup');
 
     searchButton.addEventListener('click', function () {
-        const inputValue = formatInput(searchInput.value.trim());
+        let inputValue = formatInput(searchInput.value.trim());
 
         if (inputValue) {
             fetch(`https://dummyjson.com/users/filter?key=address.city&value=${inputValue}`)
                 .then(res => res.json())
                 .then(data => {
-                    const filteredUsers = data.users;
+                    let filteredUsers = data.users;
                     console.log(filteredUsers);
                     displaySearchResults(filteredUsers);
                 })
@@ -72,7 +72,7 @@ function setupStartPage() {
         }
     });
     searchInput.addEventListener('keyup', function (event) {
-        if (event.key == 'Enter') {
+        if (event.key === 'Enter') {
             searchButton.click();
         }
     });
@@ -84,19 +84,19 @@ function setupStartPage() {
 
 function displaySearchResults(users) {
     console.log("Die Suchergebnisse bzw. User werden angezeigt!");
-    const resultsTable = document.getElementById('results-table').getElementsByTagName('tbody')[0];
-    const resultsContainer = document.getElementById('results-container');
-    const resultsTitle = document.getElementById('results-title');
+    let resultsTable = document.getElementById('results-table').getElementsByTagName('tbody')[0];
+    let resultsContainer = document.getElementById('results-container');
+    let resultsTitle = document.getElementById('results-title');
     resultsTable.innerHTML = ''; // Leere zuerst die Tabelle
     resultsContainer.classList.add('hidden'); // Verstecke das Ergebnis-Container
 
-    const searchInput = document.getElementById('state-input');
-    const searchButton = document.getElementById('search-button');
-    const hint = document.querySelector('.hint');
+    let searchInput = document.getElementById('state-input');
+    let searchButton = document.getElementById('search-button');
+    let hint = document.querySelector('.hint');
 
-    const noresultsdiv = document.getElementById('noresultsdiv');
+    let noresultsdiv = document.getElementById('noresultsdiv');
 
-    const closenoresultstitle = document.getElementById('close-noresultstitle');
+    let closenoresultstitle = document.getElementById('close-noresultstitle');
     closenoresultstitle.addEventListener('click', function () {
         noresultsdiv.classList.add('hidden');
         anzeigeStartSeite();
@@ -112,7 +112,7 @@ function displaySearchResults(users) {
     } else {
         // Ergebnisse gefunden
         resultsContainer.classList.remove('hidden'); // Ergebnis-Container anzeigen
-        const handy = window.innerWidth;
+        let handy = window.innerWidth;
         if (handy < 768) {
             resultsTitle.style.fontSize = "15px";
         } else {
@@ -123,12 +123,12 @@ function displaySearchResults(users) {
         searchButton.style.display = 'none'; // Such-Button ausblenden
         hint.style.display = 'none'; // Hinweistext ausblenden
         users.forEach(user => {
-            const row = resultsTable.insertRow();
-            const nameCell = row.insertCell(0);
-            const idCell = row.insertCell(1);
+            let row = resultsTable.insertRow();
+            let nameCell = row.insertCell(0);
+            let idCell = row.insertCell(1);
 
             // Erstellen eines anklickbaren Link zum Warenkorb
-            const userLink = document.createElement('a');
+            let userLink = document.createElement('a');
             userLink.textContent = `${user.firstName} ${user.lastName}`;
 
 
@@ -149,7 +149,7 @@ function formatInput(input) {
     return input;
 }
 function keineItemsImEinkauwagen() {
-        const nichtsimeinkaudswagencontainer = document.getElementById('nichtsimeinkaufswagencontainer');
+        let nichtsimeinkaudswagencontainer = document.getElementById('nichtsimeinkaufswagencontainer');
         nichtsimeinkaudswagencontainer.classList.remove('hidden');
 
         nichtsimeinkaufswagenbutton.addEventListener('click', function() {
@@ -159,21 +159,21 @@ function keineItemsImEinkauwagen() {
 }
 function setupResultsPage() {
     console.log("Java-Script der Result-Seite geladen!");
-    const einkaufswagencontainer = document.getElementById('einkaufswagen-container');
-    const einkaufswagentabelle = document.getElementById('carts-table').getElementsByTagName('tbody')[0];
-    const cartstitle = document.getElementById('carts-title');
+    let einkaufswagencontainer = document.getElementById('einkaufswagen-container');
+    let einkaufswagentabelle = document.getElementById('carts-table').getElementsByTagName('tbody')[0];
+    let cartstitle = document.getElementById('carts-title');
 
-    const nichtsimeinkaufswagencontainer = document.getElementById('nichtsimeinkaufswagencontainer');
-    const einkauswagenitemimdetail = document.getElementById('einkauswagenitemimdetail');
+    let nichtsimeinkaufswagencontainer = document.getElementById('nichtsimeinkaufswagencontainer');
+    let einkauswagenitemimdetail = document.getElementById('einkauswagenitemimdetail');
 
-    const url = window.location.href 
+    let url = window.location.href 
     console.log(url);
-    const regex = /ergebnisse\/(.*)/; 
+    let regex = /ergebnisse\/(.*)/; 
 
-    const match = regex.exec(url); 
+    let match = regex.exec(url); 
 
     if (match) {
-        const number = match[1]; 
+        let number = match[1]; 
         console.log("Die extrahierte Zahl ist: " + number);
 
 
@@ -181,7 +181,7 @@ function setupResultsPage() {
         nichtsimeinkaufswagencontainer.classList.add('hidden');
         einkauswagenitemimdetail.classList.add('hidden');
 
-        const nichtsimeinkaufswagenbutton = document.getElementById('nichtsimeinkaufswagenbutton');
+        let nichtsimeinkaufswagenbutton = document.getElementById('nichtsimeinkaufswagenbutton');
         nichtsimeinkaufswagenbutton.addEventListener('click', function() {
             window.history.back();
         });
@@ -189,8 +189,8 @@ function setupResultsPage() {
         fetch(`https://dummyjson.com/users/${number}/carts`)
             .then(res => res.json())
             .then(data => {
-                const carts = data.carts;
-                if (carts.length == 0) {
+                let carts = data.carts;
+                if (carts.length === 0) {
                     console.log("Kein Warenkorb gefunden!");
                     nichtsimeinkaufswagencontainer.classList.remove('hidden');
                 } else {
@@ -208,14 +208,14 @@ function setupResultsPage() {
                     carts.forEach(produktauswarenkorb => {
 
 
-                        const einkaufswagentabelle = document.getElementById('carts-table').getElementsByTagName('tbody')[0];
+                        let einkaufswagentabelle = document.getElementById('carts-table').getElementsByTagName('tbody')[0];
                         einkaufswagentabelle.innerHTML = '';
 
                         produktauswarenkorb.products.forEach(item => {
-                            const row = einkaufswagentabelle.insertRow();
-                            const titelCell = row.insertCell(0);
-                            const preisCell = row.insertCell(1);
-                            const itemLink = document.createElement('a');
+                            let row = einkaufswagentabelle.insertRow();
+                            let titelCell = row.insertCell(0);
+                            let preisCell = row.insertCell(1);
+                            let itemLink = document.createElement('a');
                             itemLink.textContent = item.title;
                             itemLink.addEventListener('click', () => {
                                 console.log("Die Detailansicht des geklickten Items!");
@@ -239,31 +239,31 @@ function setupResultsPage() {
 function setupItemPage() {
     console.log("Java Script der Detailsicht des Items geladen!");
 
-    const url = window.location.href 
+    let url = window.location.href 
     console.log(url);
-    const regex = /item\/(.*)/; 
+    let regex = /item\/(.*)/; 
 
-    const match = regex.exec(url); 
-    const itemid = match[1]; 
+    let match = regex.exec(url); 
+    let itemid = match[1]; 
     console.log(itemid);
 
     fetch(`https://dummyjson.com/products/${itemid}`)
         .then(res => res.json())
         .then(data => {
-            const item = data;
+            let item = data;
             console.log(item);
-            const itemstable = document.getElementById('items-table').getElementsByTagName('tbody')[0];
+            let itemstable = document.getElementById('items-table').getElementsByTagName('tbody')[0];
             itemstable.innerHTML = '';
-            const einkauswagenitemimdetail = document.getElementById('einkauswagenitemimdetail');
-            const einkaufswagencontainer = document.getElementById('einkaufswagen-container');
-            const itemImDetailTitel = document.getElementById('itemImDetailTitel');
+            let einkauswagenitemimdetail = document.getElementById('einkauswagenitemimdetail');
+            let einkaufswagencontainer = document.getElementById('einkaufswagen-container');
+            let itemImDetailTitel = document.getElementById('itemImDetailTitel');
             einkaufswagencontainer.classList.add('hidden');
             einkauswagenitemimdetail.classList.remove('hidden');
             itemImDetailTitel.textContent = `${item.title}`;
 
-            const row = itemstable.insertRow();
-            const mengeCell = row.insertCell(0);
-            const preisgesamtCell = row.insertCell(1);
+            let row = itemstable.insertRow();
+            let mengeCell = row.insertCell(0);
+            let preisgesamtCell = row.insertCell(1);
 
             mengeCell.textContent = item.category;
             preisgesamtCell.textContent = item.brand;
