@@ -1,3 +1,4 @@
+//Die Klasse "Router" 1:1 übernommen wie sie bereitgestellt wurde um SPA-Prinzip mit Router-Klasse umzusetzen!
 class Router {
     constructor(routes) {
         this._routes = routes;
@@ -33,7 +34,9 @@ class Router {
         route.show(matches);
     }
 }
+//Funktion die die Suchseite der ersten Main-Page settet!
 function anzeigeStartSeite() {
+    //Suchleiste & Suchbutton & Hinweistext von "page-start" einblenden
     let searchInput = document.getElementById('state-input');
     let searchButton = document.getElementById('search-button');
     let hint = document.querySelector('.hint');
@@ -42,6 +45,7 @@ function anzeigeStartSeite() {
     searchButton.style.display = 'block';
     hint.style.display = 'block';
 }
+//Hier wird der Script-Code für die Main: page-start geladen!
 function setupStartPage() {
     console.log("Java-Script der Startseite geladen!");
     let searchInput = document.getElementById('state-input');
@@ -51,6 +55,8 @@ function setupStartPage() {
     let closePopup = document.getElementById('close-popup');
 
     searchButton.addEventListener('click', function () {
+        //Der Eingabe-Wert wird durch die funktion "formatInput" jeweilig formatiert zurückgegeben,
+        //damit die Groß- und Kleinschreibung egal ist 
         let inputValue = formatInput(searchInput.value.trim());
 
         if (inputValue) {
@@ -59,36 +65,43 @@ function setupStartPage() {
                 .then(data => {
                     let filteredUsers = data.users;
                     console.log(filteredUsers);
+                    //Selektierte User werden in Funktion "displaySearchResults" übergeben
+                    //und Funktion wird aufgerufen
                     displaySearchResults(filteredUsers);
                 })
                 .catch(error => {
                     console.error('Es ist ein Fehler bei der Abfrage aufgetreten', error);
                 });
         } else {
+            //Hier wird der Hinweistext eingeblendet, 
+            //falls der User keine Eingabe tätigt und die Suche startet
             popup.classList.remove('hidden');
             searchInput.style.display = 'none'; 
             searchButton.style.display = 'none'; 
             hint.style.display = 'none'; 
         }
     });
+    //Hier wird ermöglicht, dass man auch durch die Enter-Taste die Suche starten kann,
+    //ohne auf den Button klicken zu müssen
     searchInput.addEventListener('keyup', function (event) {
         if (event.key === 'Enter') {
             searchButton.click();
         }
     });
+    //Um wieder Suchstartseite einblenden, wenn man auf Zurück-Button klickt
     closePopup.addEventListener('click', function () {
         popup.classList.add('hidden');
         anzeigeStartSeite();
     });
 }
-
+//Funktion die bei der ersten Main-Page die Userergebnisse darstellt
 function displaySearchResults(users) {
     console.log("Die Suchergebnisse bzw. User werden angezeigt!");
     let resultsTable = document.getElementById('results-table').getElementsByTagName('tbody')[0];
     let resultsContainer = document.getElementById('results-container');
     let resultsTitle = document.getElementById('results-title');
-    resultsTable.innerHTML = ''; // Leere zuerst die Tabelle
-    resultsContainer.classList.add('hidden'); // Verstecke das Ergebnis-Container
+    resultsTable.innerHTML = ''; // Die Tabelle jedes Mal leeren, vor erneuter Erstellung
+    resultsContainer.classList.add('hidden'); 
 
     let searchInput = document.getElementById('state-input');
     let searchButton = document.getElementById('search-button');
@@ -131,7 +144,10 @@ function displaySearchResults(users) {
             let userLink = document.createElement('a');
             userLink.textContent = `${user.firstName} ${user.lastName}`;
 
-
+            //Jedem Namen des Users wird Listener hinzugefügt, dass man auf die andere Main-Page kommt,
+            //also die den Warenkorb des aufgerufenen Users darstellt, Hierbei wird auch die 
+            //jeweilige UserID in die URL übergeben, um diese später wieder zugetten um über diese
+            //in der Ressource "carts" den jeweiligen Warenkorb zu finden
             userLink.addEventListener('click', function () {
                 userLink.href = `#/ergebnisse/${user.id}`;
             });
@@ -142,6 +158,8 @@ function displaySearchResults(users) {
 
     }
 }
+//Durch diese Funktion ist bei der Eingabe des Wohnortes für die Suche der jeweiligen User, die Groß- und 
+//Kleinschreibung egal!
 function formatInput(input) {
     if (input && input.length > 0) {
         return input.charAt(0).toUpperCase() + input.slice(1).toLowerCase();
@@ -157,6 +175,7 @@ function keineItemsImEinkauwagen() {
         });
     
 }
+//Hier wird der Script-Code für die Main: page-ergebnisse geladen!
 function setupResultsPage() {
     console.log("Java-Script der Result-Seite geladen!");
     let einkaufswagencontainer = document.getElementById('einkaufswagen-container');
@@ -166,15 +185,19 @@ function setupResultsPage() {
     let nichtsimeinkaufswagencontainer = document.getElementById('nichtsimeinkaufswagencontainer');
     let einkauswagenitemimdetail = document.getElementById('einkauswagenitemimdetail');
 
-    let url = window.location.href 
-    console.log(url);
-    let regex = /ergebnisse\/(.*)/; 
+    let url = window.location.href //Die URL speichern in Variable "url"
+    console.log(url); //Ausgabe der URL in Konsole um Konsistenz zu prüfen
+    let regex = /ergebnisse\/(.*)/; //Hier wird die Regex-Regel festgelegt
 
     let match = regex.exec(url); 
+    //Hier wird aus der URL die jeweilige UserID extrahiert um mithilfe dieser
+    //später dann den Warenkorb zu ermitteln
 
     if (match) {
-        let number = match[1]; 
-        console.log("Die extrahierte Zahl ist: " + number);
+        let number = match[1]; //Match ist ein Array und über Index 1 wird die extrahierte UserID  in Variable 
+                                //"Number" gespeichert
+        console.log("Die extrahierte Zahl ist: " + number); 
+        //Konsolenausgabe der extrahierten UserID um Konsistenz und erfolgreiche Extrahierung festzustellen!
 
 
         einkaufswagencontainer.classList.add('hidden');
@@ -185,12 +208,14 @@ function setupResultsPage() {
         nichtsimeinkaufswagenbutton.addEventListener('click', function() {
             window.history.back();
         });
-
+        //Hier wird die extrahierte UserID in der Variable "number" bei der fetch-Abfrage übergeben um den 
+        //zugehörigen Warenkorb zu ermitteln
         fetch(`https://dummyjson.com/users/${number}/carts`)
             .then(res => res.json())
             .then(data => {
                 let carts = data.carts;
                 if (carts.length === 0) {
+                    //Falls der User keinen Warenkorb hat!
                     console.log("Kein Warenkorb gefunden!");
                     nichtsimeinkaufswagencontainer.classList.remove('hidden');
                 } else {
@@ -200,6 +225,10 @@ function setupResultsPage() {
                     cartstitle.textContent = `Warenkorb des Users (User ID: ${number})`;
                     //Für jedes Item aus der der carts-Ressource speichern wir den Titel 
                     //und den Preis in einem Zeileneintrag in der Tabelle
+
+
+                    //Hier leeren wir die Tabelle um konsistente und richtige Daten für 
+                    //den jeweiligen Warenkorb zu setzen 
                     if (einkaufswagentabelle) {
                         while (einkaufswagentabelle.rows.length > 0) {
                             einkaufswagentabelle.deleteRow(0);
@@ -217,6 +246,11 @@ function setupResultsPage() {
                             let preisCell = row.insertCell(1);
                             let itemLink = document.createElement('a');
                             itemLink.textContent = item.title;
+                            //Jedem Item aus dem Warenkorb, Event-Listener hinzufügen
+                            //das man durch das klicken auf das Item auf eine neue Main-Page
+                            //geleitet wird die "item-ergebnis"
+                            //Hier erfolgt das gleiche Prinzip, dass in die URL zusätzlich die ItemID
+                            //des geklickten Items übergeben wird um später diese extrahieren zu können 
                             itemLink.addEventListener('click', () => {
                                 console.log("Die Detailansicht des geklickten Items!");
                                 itemLink.href = `#/item/${item.id}`;
@@ -236,9 +270,15 @@ function setupResultsPage() {
 
 
 }
+//Hier wird der Script-Code für die Main: item-ergebnis geladen! 
 function setupItemPage() {
     console.log("Java Script der Detailsicht des Items geladen!");
 
+    //Gleiches Vorgehen wie auch bei der Results-Page, dieses mal wird aber nicht die UserID gegettet,
+    //sondern die jeweilige ItemID worauf der User vorherig geklickt hat
+    //Mit dieser ItemID werden die weiteren abgefragten Details des jeweiligen Items abgerufen aus der
+    //Ressource "products", da jedes Item aus einem Warenkorb, einen jeweiligen Datensatz in der Ressource
+    //"products" vorweist. In diesem stehen Informationen über das Item wie Beschreibung, Brand etc.
     let url = window.location.href 
     console.log(url);
     let regex = /item\/(.*)/; 
@@ -251,7 +291,8 @@ function setupItemPage() {
         .then(res => res.json())
         .then(data => {
             let item = data;
-            console.log(item);
+            console.log(item); 
+            //Hier wird die ItemID auf der Konsole ausgegeben um erfolgreiche Extrahierung nachzuvollziehen!
             let itemstable = document.getElementById('items-table').getElementsByTagName('tbody')[0];
             itemstable.innerHTML = '';
             let einkauswagenitemimdetail = document.getElementById('einkauswagenitemimdetail');
@@ -259,21 +300,22 @@ function setupItemPage() {
             let itemImDetailTitel = document.getElementById('itemImDetailTitel');
             einkaufswagencontainer.classList.add('hidden');
             einkauswagenitemimdetail.classList.remove('hidden');
-            itemImDetailTitel.textContent = `${item.title}`;
+            itemImDetailTitel.textContent = `${item.title}`; //Der Titel des Items
 
             let row = itemstable.insertRow();
-            let mengeCell = row.insertCell(0);
-            let preisgesamtCell = row.insertCell(1);
+            let kategoryCell = row.insertCell(0);
+            let brandCell = row.insertCell(1);
 
-            mengeCell.textContent = item.category;
-            preisgesamtCell.textContent = item.brand;
+            kategoryCell.textContent = item.category; //Die zugehörige Kategorie des Items
+            brandCell.textContent = item.brand; //Die Marke des Items
         })
         .catch(error => {
             console.error("Item konnte nicht gefunden werden!", error);
         })
 
 }
-
+//Notwendige Methode, dass entsprechend der Main-Content geswaped wird also Single-Page-Prinzip, mit zusätzlichem
+//Aufruf für jeweilige Funktion die den notwendigen Skript-Code für die jeweilige Main-Page läd!
 window.addEventListener("load", () => {
     let swapContent = (id, title) => {
         document.querySelectorAll("main").forEach(mainElement => {

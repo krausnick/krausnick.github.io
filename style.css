@@ -95,6 +95,8 @@ input#state-input {
     border-radius: 5px;
     margin-bottom: 10px;
 }
+/*Design für die Startseite */
+/*Für den Hinweistext*/
 .hint {
     display: flex;
     align-items: center;
@@ -145,6 +147,12 @@ table.content {
 .größerertext {
     font-size: 13px;
 }
+/*Reponsive Webdesign, Angepasstes Aussehen für größere Geräte als das Smartphone mit
+einer Breite von mindestens 768px, Schwellenwert der gewöhnlich dafür verwendet wird, 
+da es sich bei Geräten, die diesen Schwellenwert überschreiten, um keine Smartphones mehr 
+handelt sondern größere Endgeräte wie Ipad, Laptop- oder Computerbildschirm
+Es finden Änderung in der allgemeinen Darstellung der Überschriften, Fließtexten,
+Tabellen und dem Footer statt*/
  @media (min-width: 768px) {
     header {
         padding: 10px; 

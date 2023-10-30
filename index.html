@@ -1,71 +1,70 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <title>ShoppingData.com</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="styleneuerversuch.css" />
-        <script src="router.js"></script>
-    </head>
-    <body>
-        <header>
-            <div class="header-content">
-                <h1><a href="index.html">ShoppingData.com</a></h1>
-                <p>Dich interessiert der aktuelle Einkaufwagen eines Users von ShoppingEasy.com?</p>
+
+<head>
+    <meta charset="utf-8" />
+    <title>ShoppingData.com</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js"></script>
+</head>
+
+<body>
+    <!-- Einheitlicher Header für alle 3 Seiten bzw. Mains -->
+    <header>
+        <div class="header-content">
+            <h1><a href="index.html">ShoppingData.com</a></h1>
+            <p>Dich interessiert der aktuelle Einkaufwagen eines Users von ShoppingEasy.com?</p>
+        </div>
+    </header>
+    <!-- Die Startseite -->
+    <main id="page-start" class="hidden">
+        <!-- Der Such-Container auf der Startseite -->
+        <div class="search-container">
+            <input type="text" id="state-input" placeholder="Datenbank durchsuchen...">
+            <button id="search-button" class="button">Suchen</button>
+            <div class="hint">
+                <p>Grenzen Sie ihre Suche nach einem User mit
+                    der Eingabe dessen Wohnsitzes z.B. Washington oder
+                    Manchester ein.</p>
             </div>
-        </header>
-        <main id="page-start" class="hidden">
-            <div class="search-container">
-                <input type="text" id="state-input" placeholder="Datenbank durchsuchen...">
-                <button id="search-button" class="button">Suchen</button>
-                <div class="hint">
-                    <p>Grenzen Sie ihre Suche nach einem User mit 
-                        der Eingabe dessen Wohnsitzes z.B. Washington oder 
-                        Manchester ein.</p>
-                </div>
+        </div>
+        <!-- Der Ergebnis-Container für die gefundenen User  -->
+        <div id="results-container" class="hidden">
+            <h2 id="results-title"></h2>
+            <h3>Klicke auf User für Warenkorb!</h3>
+            <table id="results-table" class="content">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>User ID</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <!-- Der Ergebnis-Container für keine gefundenen User -->
+        <div id="noresultsdiv" class="hidden">
+            <h3 id="no-results-title">Unter dem angegebenen Wohnsitz, konnte kein User in der Datenbank gefunden werden
+            </h3>
+            <button id="close-noresultstitle" class="button">Erneut versuchen</button>
+        </div>
+        <!-- Der Popup-Container wenn keine Eingabe getätigt wurde -->
+        <div id="popup" class="hidden">
+            <div id="popup-content">
+                <p class="größerertext">Bitte geben Sie einen Wohnsitz an.</p>
+                <button id="close-popup" class="button">Erneut versuchen</button>
             </div>
-            <div id="results-container" class="hidden">
-                <h2 id="results-title"></h2>
-                <h3>Klicke auf User für Warenkorb!</h3>
-                <table id="results-table" class="content">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>User ID</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-            <div id="noresultsdiv" class="hidden">
-                <h3 id="no-results-title">Unter dem angegebenen Wohnsitz, konnte kein User in der Datenbank gefunden werden
-                </h3>
-                <button id="close-noresultstitle" class="button">Erneut versuchen</button>
-            </div>
-            <div id="popup" class="hidden">
-                <div id="popup-content">
-                    <p class="größerertext">Bitte geben Sie einen Wohnsitz an.</p>
-                    <button id="close-popup" class="button">Erneut versuchen</button>
-                </div>
-            </div>
-        </main>
-
-
-
-
-
-
-
-
-
-
-
-
-        <main id="page-ergebnisse" class="hidden">
-            <div id="nichtsimeinkaufswagencontainer" class="hidden">
-                <h3 id="nichtsimeinkaufswagen">Der User hat keine Artikel bei uns im Warenkorb.</h3>
-                <button id="nichtsimeinkaufswagenbutton" class="button">Zurück zu Suchergebnissen</button>
-            </div>
+        </div>
+    </main>
+    <!-- Die Ergebnisseite der gefundenen Warenkörbe der einzelnen User -->
+    <main id="page-ergebnisse" class="hidden">
+        <!-- Der Ergebnis-Container für keinen gefundenen Warenkorb für ausgewählten User -->
+        <div id="nichtsimeinkaufswagencontainer" class="hidden">
+            <h3 id="nichtsimeinkaufswagen">Der User hat keine Artikel bei uns im Warenkorb.</h3>
+            <button id="nichtsimeinkaufswagenbutton" class="button">Zurück zu Suchergebnissen</button>
+        </div>
+        <!-- Der Ergebnis-Container für den gefundenen Warenkorb des ausgewählten Users -->
         <div id="einkaufswagen-container" class="hidden">
             <h2 id="carts-title">r</h2>
             <h3>Klicke auf Item für Details!</h3>
@@ -79,42 +78,41 @@
                 <tbody></tbody>
             </table>
         </div>
-        </main>
+    </main>
+    <!-- Die Detailseite für genaure Infos über bestimmte Items aus einem Warenkorb -->
+    <main id="item-ergebnis" class="hidden">
+        <!-- Der Ergebnis-Container für die Detail-Informationen über das ausgewählte Item -->
+        <div id="einkauswagenitemimdetail" class="hidden">
+            <h2 id="itemImDetailTitel"></h2>
+            <h3>Detailansicht</h3>
+            <table id="items-table" class="content">
+                <thead>
+                    <tr>
+                        <th>Kategorie</th>
+                        <th>Beschreibung</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </main>
+    <!-- Der einheitliche Footer aller drei Seiten bzw. der drei Mains -->
+    <footer>
+        <div class="footer-left">
+            <h2>Impressum</h2>
+            <p>ShoppingEasy GmbH</p>
+            <p>Frankfurt am Main</p>
+            <p>Deutschland</p>
+        </div>
+        <div class="footer-center">
+            <h2>Social Media</h2>
+            <ul class="social-media">
+                <li><a href="https://www.instagram.com" target="_blank">@Instagram</a></li>
+                <li><a href="https://www.facebook.com" target="_blank">@Facebook</a></li>
+                <li><a href="https://twitter.com" target="_blank">@Twitter</a></li>
+            </ul>
+        </div>
+    </footer>
+</body>
 
-
-
-
-        <main id="item-ergebnis" class="hidden">
-            <div id="einkauswagenitemimdetail" class="hidden">
-                <h2 id="itemImDetailTitel"></h2>
-                <h3>Detailansicht</h3>
-                <table id="items-table" class="content">
-                    <thead>
-                        <tr>
-                            <th>Kategorie</th>
-                            <th>Beschreibung</th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </main>
-
-        <footer>
-            <div class="footer-left">
-                <h2>Impressum</h2>
-                <p>ShoppingEasy GmbH</p>
-                <p>Frankfurt am Main</p>
-                <p>Deutschland</p>
-            </div>
-            <div class="footer-center">
-                <h2>Social Media</h2>
-                <ul class="social-media">
-                    <li><a href="https://www.instagram.com" target="_blank">@Instagram</a></li>
-                    <li><a href="https://www.facebook.com" target="_blank">@Facebook</a></li>
-                    <li><a href="https://twitter.com" target="_blank">@Twitter</a></li>
-                </ul>
-            </div>
-        </footer>
-    </body>
 </html>
