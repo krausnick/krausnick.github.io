@@ -34,9 +34,9 @@ class Router {
         route.show(matches);
     }
 }
-//Funktion die die Suchseite der ersten Main-Page settet!
+/* Diese Funktion zeigt die Suchleiste, den Suchbutton und einen Hinweistext auf der Startseite an, 
+indem sie die entsprechenden HTML-Elemente einblendet. */
 function anzeigeStartSeite() {
-    //Suchleiste & Suchbutton & Hinweistext von "page-start" einblenden
     let searchInput = document.getElementById('state-input');
     let searchButton = document.getElementById('search-button');
     let hint = document.querySelector('.hint');
@@ -45,7 +45,21 @@ function anzeigeStartSeite() {
     searchButton.style.display = 'block';
     hint.style.display = 'block';
 }
-//Hier wird der Script-Code für die Main: page-start geladen!
+/* In der setupStartPage-Funktion wird die Hauptfunktionalität für die Startseite implementiert, 
+wozu auch die Verlinkung der Benutzer in den Suchergebnissen gehört. Diese Verlinkung ermöglicht es Benutzern, 
+auf einen bestimmten Benutzer in den Suchergebnissen zu klicken, um weitere Details anzuzeigen:
+
+1. Die setupStartPage-Funktion reagiert auf das Klickereignis des Suchbuttons oder die Eingabe der Enter-Taste, 
+nachdem der Benutzer einen Suchbegriff eingegeben hat. Dies ist der Ausgangspunkt für die Suche nach Benutzern.
+
+2. Bevor die Suche durchgeführt wird, wird die Funktion formatInput aufgerufen, um sicherzustellen, 
+dass die Eingabe des Benutzers formatiert ist. Diese Formatierung umfasst die Großschreibung des ersten Buchstabens 
+und die Kleinschreibung des restlichen Textes. Dadurch ist die Groß- und Kleinschreibung bei der Sucheingabe irrelevant. 
+
+3. Nach der Formatierung wird eine API-Anfrage an den Server gesendet, um die Benutzer zu erhalten, 
+die dem eingegebenen Suchbegriff bzw. Wonhort entsprechen. 
+Die Ergebnisse werden in der displaySearchResults-Funktion verarbeitet.
+*/
 function setupStartPage() {
     console.log("Java-Script der Startseite geladen!");
     let searchInput = document.getElementById('state-input');
@@ -55,8 +69,6 @@ function setupStartPage() {
     let closePopup = document.getElementById('close-popup');
 
     searchButton.addEventListener('click', function () {
-        //Der Eingabe-Wert wird durch die funktion "formatInput" jeweilig formatiert zurückgegeben,
-        //damit die Groß- und Kleinschreibung egal ist 
         let inputValue = formatInput(searchInput.value.trim());
 
         if (inputValue) {
@@ -65,43 +77,47 @@ function setupStartPage() {
                 .then(data => {
                     let filteredUsers = data.users;
                     console.log(filteredUsers);
-                    //Selektierte User werden in Funktion "displaySearchResults" übergeben
-                    //und Funktion wird aufgerufen
                     displaySearchResults(filteredUsers);
                 })
                 .catch(error => {
                     console.error('Es ist ein Fehler bei der Abfrage aufgetreten', error);
                 });
         } else {
-            //Hier wird der Hinweistext eingeblendet, 
-            //falls der User keine Eingabe tätigt und die Suche startet
             popup.classList.remove('hidden');
-            searchInput.style.display = 'none'; 
-            searchButton.style.display = 'none'; 
-            hint.style.display = 'none'; 
+            searchInput.style.display = 'none';
+            searchButton.style.display = 'none';
+            hint.style.display = 'none';
         }
     });
-    //Hier wird ermöglicht, dass man auch durch die Enter-Taste die Suche starten kann,
-    //ohne auf den Button klicken zu müssen
     searchInput.addEventListener('keyup', function (event) {
         if (event.key === 'Enter') {
             searchButton.click();
         }
     });
-    //Um wieder Suchstartseite einblenden, wenn man auf Zurück-Button klickt
     closePopup.addEventListener('click', function () {
         popup.classList.add('hidden');
         anzeigeStartSeite();
     });
 }
-//Funktion die bei der ersten Main-Page die Userergebnisse darstellt
+/* 
+4. In der displaySearchResults-Funktion werden die selektierten User in einer Tabelle, mit Name und UserID, 
+auf der Startseite angezeigt. 
+Für jeden Benutzer in den Suchergebnissen wird ein anklickbarer Link erstellt. 
+5. Diese Links sind so programmiert, dass sie auf die Ergebnisseite für den jeweiligen Benutzer verweisen. 
+Wenn ein Benutzer auf seinen Namen klickt, wird die URL geändert, und die Benutzer-ID wird als Parameter übergeben.
+
+Durch diese Verlinkung und die Verwendung der Benutzer-ID in der URL ermöglicht 
+die setupStartPage-Funktion die Navigation zu den Warenkorbdetails eines bestimmten Benutzers, 
+also auf die Main-Page "page-ergebnisse", 
+nachdem dieser in den Suchergebnissen ausgewählt wurde. 
+ */
 function displaySearchResults(users) {
     console.log("Die Suchergebnisse bzw. User werden angezeigt!");
     let resultsTable = document.getElementById('results-table').getElementsByTagName('tbody')[0];
     let resultsContainer = document.getElementById('results-container');
     let resultsTitle = document.getElementById('results-title');
     resultsTable.innerHTML = ''; // Die Tabelle jedes Mal leeren, vor erneuter Erstellung
-    resultsContainer.classList.add('hidden'); 
+    resultsContainer.classList.add('hidden');
 
     let searchInput = document.getElementById('state-input');
     let searchButton = document.getElementById('search-button');
@@ -140,14 +156,9 @@ function displaySearchResults(users) {
             let nameCell = row.insertCell(0);
             let idCell = row.insertCell(1);
 
-            // Erstellen eines anklickbaren Link zum Warenkorb
             let userLink = document.createElement('a');
             userLink.textContent = `${user.firstName} ${user.lastName}`;
 
-            //Jedem Namen des Users wird Listener hinzugefügt, dass man auf die andere Main-Page kommt,
-            //also die den Warenkorb des aufgerufenen Users darstellt, Hierbei wird auch die 
-            //jeweilige UserID in die URL übergeben, um diese später wieder zugetten um über diese
-            //in der Ressource "carts" den jeweiligen Warenkorb zu finden
             userLink.addEventListener('click', function () {
                 userLink.href = `#/ergebnisse/${user.id}`;
             });
@@ -158,24 +169,41 @@ function displaySearchResults(users) {
 
     }
 }
-//Durch diese Funktion ist bei der Eingabe des Wohnortes für die Suche der jeweiligen User, die Groß- und 
-//Kleinschreibung egal!
+//Durch diese Funktion wird bei der Eingabe des Wohnortes für die Suche der jeweiligen User, die Groß- und 
+//Kleinschreibung ignoriert!
 function formatInput(input) {
     if (input && input.length > 0) {
         return input.charAt(0).toUpperCase() + input.slice(1).toLowerCase();
     }
     return input;
 }
-function keineItemsImEinkauwagen() {
-        let nichtsimeinkaudswagencontainer = document.getElementById('nichtsimeinkaufswagencontainer');
-        nichtsimeinkaudswagencontainer.classList.remove('hidden');
+/* 
+Die setupResultsPage-Funktion ist verantwortlich für die Darstellung der Ergebnisseite, 
+auf der die Warenkorbdetails eines ausgewählten Benutzers angezeigt werden. 
 
-        nichtsimeinkaufswagenbutton.addEventListener('click', function() {
-            nichtsimeinkaudswagencontainer.classList.add('hidden');
-        });
-    
-}
-//Hier wird der Script-Code für die Main: page-ergebnisse geladen!
+6. Die setupResultsPage-Funktion beginnt damit, die aktuelle URL der Seite zu erfassen. 
+Mithilfe einer Regulären Ausdrucks (Regex) wird die Benutzer-ID aus der URL extrahiert.
+Die Benutzer-ID ist ein wichtiger Parameter, da sie verwendet wird, 
+um die Warenkorbdetails des ausgewählten Benutzers abzurufen.
+
+7. Nachdem die Benutzer-ID erfolgreich extrahiert wurde, überprüft die Funktion, 
+ob es für diesen Benutzer einen Warenkorb gibt. Wenn kein Warenkorb vorhanden ist, 
+wird eine Nachricht angezeigt, die dem Benutzer mitteilt, dass kein Warenkorb gefunden wurde.
+Dies geschieht durch das Ein- und Ausblenden entsprechender HTML-Elemente.
+
+8. Wenn ein Warenkorb für den ausgewählten Benutzer vorhanden ist, 
+ruft die Funktion die Warenkorbdetails von der API ab. Dies erfolgt durch eine Fetch-Anfrage an den Server. 
+Die Benutzer-ID wird verwendet, um den entsprechenden Warenkorb zu identifizieren.
+
+9. Nach dem erfolgreichen Abrufen der Warenkorbdetails werden diese in einer Tabelle auf der Seite angezeigt. 
+Dafür wird die HTML-Tabelle aktualisiert, indem Zeilen für jedes Produkt im Warenkorb erstellt werden. 
+Die Produkttitel und Preise werden in den Tabellenzellen platziert.
+
+10. Gleiches Prinzip wie bei der displaySearchResults-Funktion: 
+Für jedes Item aus dem Warenkorb wird ein anklickbarer Link erstellt.
+Die ItemID des geklickten Items wird in URL übergeben und entsprechende 
+Main-Page "item-ergebnis" & setupItemPage-Funktion wird geswapped bzw. aufgerufen.
+*/
 function setupResultsPage() {
     console.log("Java-Script der Result-Seite geladen!");
     let einkaufswagencontainer = document.getElementById('einkaufswagen-container');
@@ -185,18 +213,15 @@ function setupResultsPage() {
     let nichtsimeinkaufswagencontainer = document.getElementById('nichtsimeinkaufswagencontainer');
     let einkauswagenitemimdetail = document.getElementById('einkauswagenitemimdetail');
 
-    let url = window.location.href //Die URL speichern in Variable "url"
+    let url = window.location.href 
     console.log(url); //Ausgabe der URL in Konsole um Konsistenz zu prüfen
-    let regex = /ergebnisse\/(.*)/; //Hier wird die Regex-Regel festgelegt
+    let regex = /ergebnisse\/(.*)/; 
 
-    let match = regex.exec(url); 
-    //Hier wird aus der URL die jeweilige UserID extrahiert um mithilfe dieser
-    //später dann den Warenkorb zu ermitteln
+    let match = regex.exec(url);
 
     if (match) {
-        let number = match[1]; //Match ist ein Array und über Index 1 wird die extrahierte UserID  in Variable 
-                                //"Number" gespeichert
-        console.log("Die extrahierte Zahl ist: " + number); 
+        let number = match[1]; 
+        console.log("Die extrahierte Zahl ist: " + number);
         //Konsolenausgabe der extrahierten UserID um Konsistenz und erfolgreiche Extrahierung festzustellen!
 
 
@@ -205,11 +230,9 @@ function setupResultsPage() {
         einkauswagenitemimdetail.classList.add('hidden');
 
         let nichtsimeinkaufswagenbutton = document.getElementById('nichtsimeinkaufswagenbutton');
-        nichtsimeinkaufswagenbutton.addEventListener('click', function() {
+        nichtsimeinkaufswagenbutton.addEventListener('click', function () {
             window.history.back();
         });
-        //Hier wird die extrahierte UserID in der Variable "number" bei der fetch-Abfrage übergeben um den 
-        //zugehörigen Warenkorb zu ermitteln
         fetch(`https://dummyjson.com/users/${number}/carts`)
             .then(res => res.json())
             .then(data => {
@@ -219,16 +242,9 @@ function setupResultsPage() {
                     console.log("Kein Warenkorb gefunden!");
                     nichtsimeinkaufswagencontainer.classList.remove('hidden');
                 } else {
-                    //Wenn der aufgerufene User einen Warenkorb hat, dann erfolgt 
-                    //dessen Anzeige in tabelarischer Darstellung
                     einkaufswagencontainer.classList.remove('hidden');
                     cartstitle.textContent = `Warenkorb des Users (User ID: ${number})`;
-                    //Für jedes Item aus der der carts-Ressource speichern wir den Titel 
-                    //und den Preis in einem Zeileneintrag in der Tabelle
 
-
-                    //Hier leeren wir die Tabelle um konsistente und richtige Daten für 
-                    //den jeweiligen Warenkorb zu setzen 
                     if (einkaufswagentabelle) {
                         while (einkaufswagentabelle.rows.length > 0) {
                             einkaufswagentabelle.deleteRow(0);
@@ -246,11 +262,6 @@ function setupResultsPage() {
                             let preisCell = row.insertCell(1);
                             let itemLink = document.createElement('a');
                             itemLink.textContent = item.title;
-                            //Jedem Item aus dem Warenkorb, Event-Listener hinzufügen
-                            //das man durch das klicken auf das Item auf eine neue Main-Page
-                            //geleitet wird die "item-ergebnis"
-                            //Hier erfolgt das gleiche Prinzip, dass in die URL zusätzlich die ItemID
-                            //des geklickten Items übergeben wird um später diese extrahieren zu können 
                             itemLink.addEventListener('click', () => {
                                 console.log("Die Detailansicht des geklickten Items!");
                                 itemLink.href = `#/item/${item.id}`;
@@ -270,15 +281,16 @@ function setupResultsPage() {
 
 
 }
-//Hier wird der Script-Code für die Main: item-ergebnis geladen! 
+/* 
+11. Item-ID wird aus der URL extrahiert nach gleichem Prinzip wie oben
+
+12. Nachdem die Item-ID erfolgreich aus der URL extrahiert wurde, verwendet die Funktion diese, 
+um die Details des Elements (die Marke und die Kategorie) aus der API abzurufen.
+
+13. Nach dem Abrufen der Elementdetails werden diese Informationen (Titel, Marke und Kategorie) auf der Seite angezeigt
+*/
 function setupItemPage() {
     console.log("Java Script der Detailsicht des Items geladen!");
-
-    //Gleiches Vorgehen wie auch bei der Results-Page, dieses mal wird aber nicht die UserID gegettet,
-    //sondern die jeweilige ItemID worauf der User vorherig geklickt hat
-    //Mit dieser ItemID werden die weiteren abgefragten Details des jeweiligen Items abgerufen aus der
-    //Ressource "products", da jedes Item aus einem Warenkorb, einen jeweiligen Datensatz in der Ressource
-    //"products" vorweist. In diesem stehen Informationen über das Item wie Beschreibung, Brand etc.
     let url = window.location.href 
     console.log(url);
     let regex = /item\/(.*)/; 
@@ -314,8 +326,10 @@ function setupItemPage() {
         })
 
 }
-//Notwendige Methode, dass entsprechend der Main-Content geswaped wird also Single-Page-Prinzip, mit zusätzlichem
-//Aufruf für jeweilige Funktion die den notwendigen Skript-Code für die jeweilige Main-Page läd!
+/*
+Notwendige Methode, dass entsprechend der Main-Content geswaped wird also Single-Page-Prinzip, 
+mit zusätzlichem Aufruf für jeweilige Funktion die den notwendigen Skript-Code für die jeweilige Main-Page läd!
+*/
 window.addEventListener("load", () => {
     let swapContent = (id, title) => {
         document.querySelectorAll("main").forEach(mainElement => {
